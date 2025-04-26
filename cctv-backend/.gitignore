@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+logs/
+
+# System files
+.DS_Store
+
+# Docker ignore (optional if you want)
+docker-compose.override.yml
