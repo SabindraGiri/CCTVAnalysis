@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const PYTHON_API_URL = 'http://localhost:5001';
+const PYTHON_API_URL = 'https://cctvanalysis.onrender.com';//
 
 function UploadVideo() {
   const [selectedFile, setSelectedFile] = useState(null);
