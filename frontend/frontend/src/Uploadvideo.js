@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const PYTHON_API_URL = 'https://cctvanalysis.onrender.com';//
+// ✅ Your deployed backend URL
+const PYTHON_API_URL = 'https://cctvanalysis.onrender.com';
 
 function UploadVideo() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -29,22 +30,32 @@ function UploadVideo() {
 
       const { message, total_frames, detected_objects, activity } = response.data;
 
-      let resultText = `${message}\n\nTotal Frames: ${total_frames}\n\nDetected Objects:\n`;
+      let resultText = `${message}\n\n📦 Total Frames: ${total_frames}\n\n🎯 Detected Objects:\n`;
       for (const [label, count] of Object.entries(detected_objects)) {
         resultText += `- ${label}: ${count}\n`;
       }
 
       if (activity) {
-        resultText += `\nActivity Recognition:\n`;
+        resultText += `\n🚨 Activity Recognition:\n`;
         if (activity.loitering) resultText += `⚠️ Loitering Detected\n`;
         if (activity.group_gathering) resultText += `👥 Group Gathering Detected\n`;
         resultText += `🏃 Motion: ${activity.motion || 'Unknown'}\n`;
-      }      
+      }
 
       setResponseMessage(resultText);
     } catch (error) {
-      console.error('Error uploading video:', error);
-      setResponseMessage('Failed to upload or analyze video.');
+      console.error('❌ Error uploading video:', error);
+
+      if (error.response) {
+        console.error('📩 Server responded with:', error.response.status, error.response.data);
+        setResponseMessage(`Server Error: ${error.response.status} - ${error.response.data.message || 'Unknown error'}`);
+      } else if (error.request) {
+        console.error('🕸 No response from server:', error.request);
+        setResponseMessage('No response received from server.');
+      } else {
+        console.error('🔧 Request setup error:', error.message);
+        setResponseMessage('Request setup error.');
+      }
     }
   };
 
@@ -59,7 +70,7 @@ function UploadVideo() {
       </button>
 
       <div style={{ marginTop: '2rem', whiteSpace: 'pre-wrap' }}>
-        <h3>Analysis Result:</h3>
+        <h3>🧠 Analysis Result:</h3>
         <p>{responseMessage}</p>
       </div>
     </div>
