@@ -5,3 +5,5 @@ torchvision
 transformers
 pillow
 opencv-python
+timm
+
